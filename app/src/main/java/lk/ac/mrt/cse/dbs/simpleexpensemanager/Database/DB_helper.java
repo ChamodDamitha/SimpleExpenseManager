@@ -13,17 +13,17 @@ public class DB_helper extends SQLiteOpenHelper {
     private static DB_helper db_helper = null;
     private static final int db_version = 1;
 
-    private static final String accounts_table = "Accounts";
-    private static final String account_no = "account_no";
-    private static final String bank_name = "bank_name";
-    private static final String account_holder_name = "account_holder_name";
-    private static final String account_balance = "account_balance";
+    public static final String accounts_table = "Accounts";
+    public static final String account_no = "account_no";
+    public static final String bank_name = "bank_name";
+    public static final String account_holder_name = "account_holder_name";
+    public static final String account_balance = "account_balance";
 
-    private static final String transactions_table = "Transations";
-    private static final String transaction_id = "transaction_id";
-    private static final String date = "date";
-    private static final String expense_type = "expense_type";
-    private static final String amount = "amount";
+    public static final String transactions_table = "Transations";
+    public static final String transaction_id = "transaction_id";
+    public static final String date = "date";
+    public static final String expense_type = "expense_type";
+    public static final String amount = "amount";
 
 
     public static DB_helper getInstance(Context context) {
