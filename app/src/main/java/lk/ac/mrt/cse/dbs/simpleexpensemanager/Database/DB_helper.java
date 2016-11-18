@@ -45,7 +45,7 @@ public class DB_helper extends SQLiteOpenHelper {
         String transactionTable = String.format("CREATE TABLE %s(%s INTEGER PRIMARY KEY AUTOINCREMENT " +
                 "NOT NULL,%s VARCHAR(100) NOT NULL,%s DATE NULL,%s DECIMAL(10,2) NULL," +
                 "%s VARCHAR(100) NULL, FOREIGN KEY(%s) REFERENCES %s(%s))", "transactions",
-                transaction_id, account_no, date, amount, expense_type, account_no, accountTable, account_no);
+                transaction_id, account_no, date, amount, expense_type, account_no, accounts_table, account_no);
 
         db.execSQL(accountTable);
         db.execSQL(transactionTable);
