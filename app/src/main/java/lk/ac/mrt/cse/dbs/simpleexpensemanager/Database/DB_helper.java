@@ -19,7 +19,7 @@ public class DB_helper extends SQLiteOpenHelper {
     public static final String account_holder_name = "account_holder_name";
     public static final String account_balance = "account_balance";
 
-    public static final String transactions_table = "Transations";
+    public static final String transactions_table = "Transactions";
     public static final String transaction_id = "transaction_id";
     public static final String date = "date";
     public static final String expense_type = "expense_type";
@@ -44,11 +44,11 @@ public class DB_helper extends SQLiteOpenHelper {
 
         String transactionTable = String.format("CREATE TABLE %s(%s INTEGER PRIMARY KEY AUTOINCREMENT " +
                 "NOT NULL,%s VARCHAR(100) NOT NULL,%s DATE NULL,%s DECIMAL(10,2) NULL," +
-                "%s VARCHAR(100) NULL, FOREIGN KEY(%s) REFERENCES %s(%s))", "transactions",
+                "%s VARCHAR(100) NULL, FOREIGN KEY(%s) REFERENCES %s(%s))", transactions_table,
                 transaction_id, account_no, date, amount, expense_type, account_no, accounts_table, account_no);
 
-        db.execSQL(accountTable);
         db.execSQL(transactionTable);
+        db.execSQL(accountTable);
         
     }
 

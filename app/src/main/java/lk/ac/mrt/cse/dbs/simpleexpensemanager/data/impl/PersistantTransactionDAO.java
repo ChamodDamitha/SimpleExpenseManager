@@ -43,7 +43,7 @@ public class PersistantTransactionDAO implements TransactionDAO {
 
     @Override
     public List<Transaction> getAllTransactionLogs() {
-        return getPaginatedTransactionLogs(0);
+        return getPaginatedTransactionLogs(100);
     }
 
     @Override
@@ -52,9 +52,9 @@ public class PersistantTransactionDAO implements TransactionDAO {
         SQLiteDatabase db = db_helper.getReadableDatabase();
 
         //Query to get details of all the transactions
-        String query = String.format("SELECT %s, %s, %s, %s FROM %s ORDER BY %s DESC",
+        String query = String.format("SELECT %s, %s, %s, %s FROM %s ORDER BY %s DESC LIMIT %s",
                 db_helper.account_no,db_helper.date,db_helper.expense_type,db_helper.amount,
-                db_helper.transactions_table,db_helper.transaction_id);
+                db_helper.transactions_table,db_helper.transaction_id,limit);
 
         Cursor cursor = db.rawQuery(query, null);
 
