@@ -26,7 +26,11 @@ public class DB_helper extends SQLiteOpenHelper {
     private static final String amount = "amount";
 
 
-    public static DB_helper
+    public static DB_helper getInstance(Context context) {
+        if (db_helper == null)
+            db_helper = new DB_helper(context);
+        return db_helper;
+    }
 
     private DB_helper(Context context) {
         super(context, db_name, null, db_version);
