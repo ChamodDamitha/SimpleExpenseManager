@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by Chamod on 11/18/2016.
  */
 public class DB_helper extends SQLiteOpenHelper {
+    //database and table attributes
     protected static final String db_name = "140542B";
     private static DB_helper db_helper = null;
     private static final int db_version = 1;
@@ -25,7 +26,7 @@ public class DB_helper extends SQLiteOpenHelper {
     public static final String expense_type = "expense_type";
     public static final String amount = "amount";
 
-
+    //singleton for DB_helper class
     public static DB_helper getInstance(Context context) {
         if (db_helper == null)
             db_helper = new DB_helper(context);
@@ -36,10 +37,11 @@ public class DB_helper extends SQLiteOpenHelper {
         super(context, db_name, null, db_version);
     }
 
+    //create account and transaction tables
     @Override
     public void onCreate(SQLiteDatabase db) {
         String accountTable = String.format("CREATE TABLE %s(%s VARCHAR(20) NOT NULL PRIMARY KEY," +
-                "%s VARCHAR(100) NULL,%s VARCHAR(100) NULL,%s DECIMAL(10,2) NULL )", accounts_table,
+                "%s VARCHAR(100),%s VARCHAR(100),%s DECIMAL(10,2))", accounts_table,
                 account_no, bank_name, account_holder_name, account_balance);
 
         String transactionTable = String.format("CREATE TABLE %s(%s INTEGER PRIMARY KEY AUTOINCREMENT " +

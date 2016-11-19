@@ -19,16 +19,16 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
  */
 public class PersistantAccountDAO implements AccountDAO {
     private Context ctx;
+    private DB_helper db_helper;
 
     //Constructor
     public PersistantAccountDAO(Context ctx) {
         this.ctx = ctx;
+        this.db_helper=DB_helper.getInstance(ctx);
     }
 
     @Override
     public List<String> getAccountNumbersList() {
-        DB_helper db_helper = DB_helper.getInstance(ctx);
-
         SQLiteDatabase db = db_helper.getReadableDatabase();
 
         String query = String.format("SELECT %s FROM %s ORDER BY %s",
@@ -37,7 +37,7 @@ public class PersistantAccountDAO implements AccountDAO {
         Cursor cursor = db.rawQuery(query, null);
 
         ArrayList<String> result = new ArrayList<>();
-
+        //add account numbers to an list
         while (cursor.moveToNext())
         {
             result.add(cursor.getString(cursor.getColumnIndex(db_helper.account_no)));
@@ -50,8 +50,6 @@ public class PersistantAccountDAO implements AccountDAO {
 
     @Override
     public List<Account> getAccountsList() {
-        DB_helper db_helper = DB_helper.getInstance(ctx);
-
         SQLiteDatabase db = db_helper.getReadableDatabase();
 
         String query = String.format("SELECT * FROM %s ORDER BY %s",
@@ -61,6 +59,7 @@ public class PersistantAccountDAO implements AccountDAO {
 
         ArrayList<Account> result = new ArrayList<>();
 
+        //add account objects to a list
         while (cursor.moveToNext())
         {
             Account account=new Account(cursor.getString(cursor.getColumnIndex(db_helper.account_no)),
@@ -77,7 +76,6 @@ public class PersistantAccountDAO implements AccountDAO {
 
     @Override
     public Account getAccount(String accountNo) throws InvalidAccountException {
-        DB_helper db_helper = DB_helper.getInstance(ctx);
         SQLiteDatabase db = db_helper.getReadableDatabase();
 
         String query = String.format("SELECT * FROM %s WHERE %s=%s",
@@ -85,7 +83,7 @@ public class PersistantAccountDAO implements AccountDAO {
 
         Cursor cursor = db.rawQuery(query, null);
         Account account = null;
-
+        //create account object
         if (cursor.moveToFirst()) {
             account=new Account(cursor.getString(cursor.getColumnIndex(db_helper.account_no)),
                     cursor.getString(cursor.getColumnIndex(db_helper.bank_name)),
@@ -101,7 +99,6 @@ public class PersistantAccountDAO implements AccountDAO {
 
     @Override
     public void addAccount(Account account) {
-        DB_helper db_helper = DB_helper.getInstance(ctx);
         SQLiteDatabase db = db_helper.getWritableDatabase();
 
         //Save account details to the account table
@@ -116,13 +113,13 @@ public class PersistantAccountDAO implements AccountDAO {
 
     @Override
     public void removeAccount(String accountNo) throws InvalidAccountException {
-        DB_helper db_helper = DB_helper.getInstance(ctx);
         SQLiteDatabase db = db_helper.getWritableDatabase();
+        //check for the availability of the account
         String query = String.format("SELECT * FROM %s WHERE %s = %s",
                 db_helper.accounts_table,db_helper.account_no,accountNo);
 
         Cursor cursor = db.rawQuery(query, null);
-
+        //delete the available account
         if (cursor.moveToFirst()) {
             db.delete(db_helper.accounts_table, db_helper.account_no + " = ?", new String[] { accountNo });
             cursor.close();
@@ -135,7 +132,6 @@ public class PersistantAccountDAO implements AccountDAO {
 
     @Override
     public void updateBalance(String accountNo, ExpenseType expenseType, double amount) throws InvalidAccountException {
-        DB_helper db_helper = DB_helper.getInstance(ctx);
         SQLiteDatabase db = db_helper.getWritableDatabase();
 
         Account account = getAccount(accountNo);
@@ -143,7 +139,7 @@ public class PersistantAccountDAO implements AccountDAO {
         if (account!=null) {
 
             double new_amount=0;
-
+            //check the account type
             if (expenseType.equals(ExpenseType.EXPENSE)) {
                 new_amount = account.getBalance() - amount;
             }
